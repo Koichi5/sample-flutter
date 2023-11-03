@@ -13,24 +13,12 @@ class NotifierScreen extends ConsumerWidget {
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [Text('$state')],
+          children: [Text('$state', style: const TextStyle(fontSize: 20),)],
         ),
       ),
       floatingActionButton: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FloatingActionButton.extended(
-            label: const Text('Random'),
-            heroTag: 'async',
-            onPressed: () async {
-              await ref
-                  .read(notifierScreenControllerProvider.notifier)
-                  .getRandomNum();
-            },
-          ),
-          const SizedBox(
-            width: 20,
-          ),
           FloatingActionButton(
             heroTag: 'increment',
             onPressed: () {

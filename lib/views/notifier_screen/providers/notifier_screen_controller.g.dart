@@ -7,7 +7,7 @@ part of 'notifier_screen_controller.dart';
 // **************************************************************************
 
 String _$notifierScreenControllerHash() =>
-    r'59ef0f0de9f34cc4e8f14b7c210ee1a9627046c6';
+    r'908a8f551793ce6246dac2cebea95090bbb9f99a';
 
 /// See also [NotifierScreenController].
 @ProviderFor(NotifierScreenController)

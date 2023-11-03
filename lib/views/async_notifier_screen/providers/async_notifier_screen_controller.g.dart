@@ -7,7 +7,7 @@ part of 'async_notifier_screen_controller.dart';
 // **************************************************************************
 
 String _$asyncNotifierScreenControllerHash() =>
-    r'9298be6cafbb9ecdb875a93208d558e0c5467bdd';
+    r'5dfee418041afab89aa19feea26ff52473c208b9';
 
 /// See also [AsyncNotifierScreenController].
 @ProviderFor(AsyncNotifierScreenController)

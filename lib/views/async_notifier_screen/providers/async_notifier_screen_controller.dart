@@ -8,7 +8,7 @@ part 'async_notifier_screen_controller.g.dart';
 @riverpod
 class AsyncNotifierScreenController extends _$AsyncNotifierScreenController {
   @override
-  FutureOr<String> build() async {
+  Future<String> build() async {
     const url = 'https://random-word-api.herokuapp.com/word';
     final response = await http.get(
       Uri.parse(url),

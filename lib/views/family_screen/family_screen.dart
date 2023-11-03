@@ -16,6 +16,7 @@ class FamilyScreen extends ConsumerWidget {
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('$num1 + $num2'),
             Text('result: ${state.toString()}')
