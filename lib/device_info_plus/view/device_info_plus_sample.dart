@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sample_flutter/device_info_plus/provider/device_info_plus_provider.dart';
 
-class DeviceInfoPlusSample extends HookConsumerWidget {
+class DeviceInfoPlusSample extends ConsumerWidget {
   const DeviceInfoPlusSample({super.key});
 
   @override

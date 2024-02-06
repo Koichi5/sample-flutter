@@ -50,6 +50,7 @@ class DeviceInfoPlusController extends _$DeviceInfoPlusController {
 
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
     log('Hello Android User !');
+    log(build.toString());
     return <String, dynamic>{
       'version.securityPatch': build.version.securityPatch,
       'version.sdkInt': build.version.sdkInt,
@@ -110,6 +111,7 @@ class DeviceInfoPlusController extends _$DeviceInfoPlusController {
 
   Map<String, dynamic> _readLinuxDeviceInfo(LinuxDeviceInfo data) {
     log('Hello Linux User !');
+    log(data.toString());
     return <String, dynamic>{
       'name': data.name,
       'version': data.version,
@@ -127,6 +129,7 @@ class DeviceInfoPlusController extends _$DeviceInfoPlusController {
 
   Map<String, dynamic> _readWebBrowserInfo(WebBrowserInfo data) {
     log('Hello Web User !');
+    log(data.toString());
     return <String, dynamic>{
       'browserName': data.browserName.name,
       'appCodeName': data.appCodeName,
@@ -148,6 +151,7 @@ class DeviceInfoPlusController extends _$DeviceInfoPlusController {
 
   Map<String, dynamic> _readMacOsDeviceInfo(MacOsDeviceInfo data) {
     log('Hello macOS User !');
+    log(data.toString());
     return <String, dynamic>{
       'computerName': data.computerName,
       'hostName': data.hostName,
@@ -167,6 +171,7 @@ class DeviceInfoPlusController extends _$DeviceInfoPlusController {
 
   Map<String, dynamic> _readWindowsDeviceInfo(WindowsDeviceInfo data) {
     log('Hello Windows User !');
+    log(data.toString());
     return <String, dynamic>{
       'numberOfCores': data.numberOfCores,
       'computerName': data.computerName,
