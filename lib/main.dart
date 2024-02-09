@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sample_flutter/shared_preferences/provider/theme_mode_provider.dart';
+import 'package:sample_flutter/shared_preferences/view/shared_preferences_sample.dart';
 
 void main() {
   runApp(
@@ -9,16 +11,17 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.light(),
+      // darkTheme: ThemeData.dark(),
+      // themeMode: themeMode,
+      home: const SharedPreferencesSample(),
     );
   }
 }
