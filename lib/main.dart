@@ -19,8 +19,8 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),
-      // darkTheme: ThemeData.dark(),
-      // themeMode: themeMode,
+      darkTheme: ThemeData.dark(),
+      themeMode: themeMode,
       home: const SharedPreferencesSample(),
     );
   }

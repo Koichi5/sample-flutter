@@ -71,6 +71,7 @@ class ThemeModeController extends StateNotifier<ThemeMode> {
   Future<void> _loadThemeMode() async {
     final prefs = await SharedPreferences.getInstance();
     final loadedMode = prefs.getString(themeModeKey);
+    print('loaded mode : $loadedMode');
     if (loadedMode != null) {
       state = ThemeMode.values.firstWhere(
         (mode) => mode.toString().split('.').last == loadedMode,
