@@ -47,5 +47,12 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- mobile scanner -->
+	<key>NSCameraUsageDescription</key>
+    <string>QR code scanner needs camera access to scan QR codes</string>
+
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>QR code scanner needs photos access to get QR code from photo library</string>
+	<!-- mobile scanner -->
 </dict>
 </plist>
