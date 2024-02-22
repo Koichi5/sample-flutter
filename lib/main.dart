@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample_flutter/qr/views/mobile_scanner_sample.dart';
-import 'package:sample_flutter/qr/views/qr_sample.dart';
 
 void main() {
   runApp(
@@ -17,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MobileScannerSample(),
+      home: MobileScannerBarcodeSample(),
     );
   }
 }
