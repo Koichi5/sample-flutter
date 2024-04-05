@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sample_flutter/models/macros/foo.dart';
 import 'package:sample_flutter/views/routes/router.dart';
 
 void main() {
-  Foo().greet();
-
   runApp(
     const ProviderScope(
       child: MyApp(),

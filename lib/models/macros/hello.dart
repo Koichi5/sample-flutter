@@ -1,5 +1,4 @@
 import 'package:macros/macros.dart';
-import 'package:_fe_analyzer_shared/src/macros/api.dart';
 
 macro class Hello implements ClassDeclarationsMacro {
   const Hello();
