@@ -37,3 +37,9 @@ class Post {
 
 // @Model()
 // class Post (int userId, int id, String title, String body);
+
+@Model()
+class Hoge {
+  final int id;
+  final Post post;
+}
