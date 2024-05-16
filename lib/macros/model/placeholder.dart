@@ -1,4 +1,4 @@
-import 'package:sample_flutter/models/macros/model.dart';
+import 'package:sample_flutter/macros/macro/model.dart';
 
 @Model()
 class Photo {
@@ -17,9 +17,6 @@ class Photo {
   });
 }
 
-// @Model()
-// class Photo (int albumId, int id, String title, String url, String thumbnailUrl);
-
 @Model()
 class Post {
   final int userId;
@@ -33,13 +30,4 @@ class Post {
     required this.title,
     required this.body,
   });
-}
-
-// @Model()
-// class Post (int userId, int id, String title, String body);
-
-@Model()
-class Hoge {
-  final int id;
-  final Post post;
 }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:sample_flutter/models/macros/user.dart';
+import 'package:sample_flutter/macros/model/user.dart';
 
 void main() {
   const body = '''

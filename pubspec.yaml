@@ -18,6 +18,7 @@ dependencies:
   go_router: ^13.1.0
   hooks_riverpod: ^2.4.5
   macros: any
+  json: ^0.20.1
 
 dependency_overrides:
   macros:

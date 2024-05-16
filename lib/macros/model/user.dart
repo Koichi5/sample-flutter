@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'package:sample_flutter/models/macros/model.dart';
+import 'package:sample_flutter/macros/macro/model.dart';
 
 @Model()
 class User {

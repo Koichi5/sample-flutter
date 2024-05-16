@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:sample_flutter/models/macros/placeholder.dart';
+import 'package:sample_flutter/macros/model/placeholder.dart';
 
 Future main() async {
   final url = Uri.parse('https://jsonplaceholder.typicode.com/posts');
