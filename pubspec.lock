@@ -4,11 +4,10 @@ packages:
   _fe_analyzer_shared:
     dependency: "direct dev"
     description:
-      path: "pkg/_fe_analyzer_shared"
-      ref: main
-      resolved-ref: cb64e6e1ede96436bf9c45ce45d1e55cef1c2765
-      url: "https://github.com/dart-lang/sdk.git"
-    source: git
+      name: _fe_analyzer_shared
+      sha256: "0b2f2bd91ba804e53a61d757b986f89f1f9eaed5b11e4b2f5a2468d86d6c9fc7"
+      url: "https://pub.dev"
+    source: hosted
     version: "67.0.0"
   _macros:
     dependency: transitive
@@ -229,7 +228,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_hooks:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_hooks
       sha256: cde36b12f7188c85286fba9b38cc5a902e7279f36dd676967106c041dc9dde70
@@ -262,6 +261,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  freezed:
+    dependency: "direct main"
+    description:
+      name: freezed
+      sha256: a434911f643466d78462625df76fd9eb13e57348ff43fe1f77bbe909522c67a1
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.5.2"
   freezed_annotation:
     dependency: transitive
     description:
@@ -417,11 +424,10 @@ packages:
   macros:
     dependency: "direct main"
     description:
-      path: "pkg/macros"
-      ref: main
-      resolved-ref: ae03b57cbb47189484d6aa35a4f1959c5ae29b95
-      url: "https://github.com/dart-lang/sdk.git"
-    source: git
+      name: macros
+      sha256: a8403c89b36483b4cbf9f1fcd24562f483cb34a5c9bf101cf2b0d8a083cf1239
+      url: "https://pub.dev"
+    source: hosted
     version: "0.1.0-main.5"
   matcher:
     dependency: transitive
@@ -693,5 +699,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.5.0-0 <4.0.0"
+  dart: ">=3.5.0-0.0-dev <4.0.0"
   flutter: ">=3.18.0-18.0.pre.54"
