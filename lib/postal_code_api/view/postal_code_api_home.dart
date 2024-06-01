@@ -34,6 +34,15 @@ class PostalCodeApiHome extends HookConsumerWidget {
           postalCodeApiResponse.addresses?.first.ja?.address4 ?? '';
     }
 
+    bool isValid() {
+      return postalCodeController.text != '' &&
+          prefectureController.text != '' &&
+          address1Controller.text != '' &&
+          address2Controller.text != '' &&
+          address3Controller.text != '' &&
+          address4Controller.text != '';
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('PostalCodeApiHome'),
@@ -109,19 +118,36 @@ class PostalCodeApiHome extends HookConsumerWidget {
           const Gap(24),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PostalCodeApiDetail(
-                    postalCode: postalCodeController.text,
-                    prefecture: prefectureController.text,
-                    address1: address1Controller.text,
-                    address2: address2Controller.text,
-                    address3: address3Controller.text,
-                    address4: address4Controller.text,
+              if (!isValid()) {
+                showDialog(
+                  context: context,
+                  builder: (context) => const SimpleDialog(
+                    title: Text('入力内容に誤りがあります'),
+                    children: [
+                      Center(
+                        child: Text(
+                          '入力内容に抜け漏れがないか\n再度ご確認ください',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              );
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PostalCodeApiDetail(
+                      postalCode: postalCodeController.text,
+                      prefecture: prefectureController.text,
+                      address1: address1Controller.text,
+                      address2: address2Controller.text,
+                      address3: address3Controller.text,
+                      address4: address4Controller.text,
+                    ),
+                  ),
+                );
+              }
             },
             child: const Text(
               '登 録',
