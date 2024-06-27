@@ -19,7 +19,8 @@ class FamilyScreen extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('$num1 + $num2'),
-            Text('result: ${state.toString()}')
+            Text('result: ${state.toString()}'),
+            Container()
           ],
         ),
       ),
