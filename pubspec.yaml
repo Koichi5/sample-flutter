@@ -15,14 +15,14 @@ dependencies:
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
   http: ^1.1.0
-  go_router: ^12.0.1
+  go_router: ^14.2.3
   hooks_riverpod: ^2.4.5
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.0
   flutter_hooks: ^0.20.5
   gap: ^3.0.1
   dataclass: ^1.0.0
-  freezed: ^3.0.0-0.0.dev
+  device_info_plus: ^10.1.0
 
 dev_dependencies:
   flutter_test:
@@ -31,9 +31,11 @@ dev_dependencies:
   riverpod_generator: ^2.3.3
   build_runner: ^2.4.6
   go_router_builder: ^2.3.4
-  # freezed: ^2.4.1
   json_serializable: ^6.6.1
+  freezed: ^2.5.3
 
+dependency_overrides:
+  analyzer: ">=4.2.0 <5.0.0"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
