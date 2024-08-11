@@ -23,6 +23,7 @@ dependencies:
   gap: ^3.0.1
   dataclass: ^1.0.0
   freezed: ^3.0.0-0.0.dev
+  table_calendar: ^3.1.2
 
 dev_dependencies:
   flutter_test:
