@@ -1,0 +1,41 @@
+{
+  "flutter-plus.wraps": [
+    {
+      "name": "Scaffold",
+      "body": [
+        "Scaffold(",
+        "  body: ${widget},",
+        ")"
+      ]
+    },
+    {
+      "name": "ListView",
+      "body": [
+        "ListView(",
+        "  children: [",
+        "    ${widget},",
+        "  ],",
+        ")"
+      ]
+    },
+    {
+      "name": "ListView.builder",
+      "body": [
+        "ListView.builder(",
+        "  itemCount: ${1:length},",
+        "  itemBuilder: (context, index) {",
+        "    return ${widget};",
+        "  },",
+        ")"
+      ]
+    },
+    {
+      "name": "SingleChildScrollView",
+      "body": [
+        "SingleChildScrollView(",
+        "  child: ${widget},",
+        ")"
+      ]
+    }
+  ]
+}
