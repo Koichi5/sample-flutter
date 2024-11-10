@@ -35,11 +35,11 @@ class _SliverFloatingHeaderSampleState
             child: CustomScrollView(
               controller: scrollController,
               slivers: const <Widget>[
-                SliverFloatingHeader(
-                  child: Text(
-                    'SliverFloatingHeader Sample',
-                  ),
-                ),
+                // SliverFloatingHeader(
+                //   child: Text(
+                //     'SliverFloatingHeader Sample',
+                //   ),
+                // ),
                 ItemList(),
               ],
             ),

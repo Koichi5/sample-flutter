@@ -24,13 +24,17 @@ dependencies:
   dataclass: ^1.0.0
   freezed: ^3.0.0-0.0.dev
   table_calendar: ^3.1.2
+  image: ^4.3.0
+  image_picker: ^1.1.2
+  build_runner: ^2.4.13
+  image_picker_web: ^4.0.0
+  photo_view: ^0.15.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   riverpod_generator: ^2.3.3
-  build_runner: ^2.4.6
   go_router_builder: ^2.3.4
   # freezed: ^2.4.1
   json_serializable: ^6.6.1
