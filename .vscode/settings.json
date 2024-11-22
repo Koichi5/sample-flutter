@@ -37,5 +37,6 @@
         ")"
       ]
     }
-  ]
+  ],
+  "dart.flutterSdkPath": ".fvm/versions/master"
 }
