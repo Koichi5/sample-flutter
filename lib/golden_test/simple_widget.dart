@@ -17,7 +17,7 @@ class SimpleWidget extends StatelessWidget {
             SizedBox(height: 20),
             Text(
               'Sample Text 2',
-              style: TextStyle(fontSize: 30),
+              style: TextStyle(fontSize: 32),
             ),
             SizedBox(height: 20),
             Text(

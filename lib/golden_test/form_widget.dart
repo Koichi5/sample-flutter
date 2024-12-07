@@ -21,7 +21,7 @@ class FormWidget extends StatelessWidget {
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Password',
@@ -29,7 +29,7 @@ class FormWidget extends StatelessWidget {
                 ),
                 keyboardType: TextInputType.visiblePassword,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Password (Confirm)',
@@ -37,7 +37,7 @@ class FormWidget extends StatelessWidget {
                 ),
                 keyboardType: TextInputType.visiblePassword,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 28),
               ElevatedButton(
                 onPressed: () {},
                 child: const Text('Submit'),
