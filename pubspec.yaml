@@ -30,6 +30,8 @@ dependencies:
   image_picker_web: ^4.0.0
   photo_view: ^0.15.0
   async_queue: ^2.0.0
+  shared_preferences: ^2.3.3
+  pigeon: ^22.7.0
 
 dev_dependencies:
   flutter_test:
