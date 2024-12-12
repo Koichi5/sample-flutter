@@ -12,7 +12,7 @@ class SpacingScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          spacing: 16,
+          // spacing: 16,
           children: [
             const _CustomTextField(
               hintText: 'メールアドレス',
@@ -23,7 +23,7 @@ class SpacingScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             const _CustomTextField(
-              
+
               hintText: 'パスワード（確認）',
             ),
             const SizedBox(height: 16),
