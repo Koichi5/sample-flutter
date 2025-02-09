@@ -1,0 +1,203 @@
+name: Flutter Golden Tests
+
+on:
+  pull_request:
+    paths:
+      - "lib/signals/**"
+      - "test/golden/**"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  golden_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.base_ref }}
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.27.4"
+          channel: "stable"
+
+      - name: Get test targets
+        id: test_targets
+        run: |
+          # PRのタイトルから対象を取得
+          if [[ "${{ github.event.pull_request.title }}" =~ \[GoldenTest:(.+)\] ]]; then
+            echo "targets=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+          else
+            echo "targets=all" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate base images
+        run: |
+          # 依存関係の初期化
+          rm -f pubspec.lock
+          flutter clean
+          flutter pub get
+
+          # テストディレクトリを作成
+          mkdir -p test/golden/counter_samples/goldens/base
+
+          # テスト対象に応じてテストを実行
+          if [ "${{ steps.test_targets.outputs.targets }}" = "all" ]; then
+            flutter test --update-goldens test/golden || true
+          else
+            IFS=',' read -ra TARGETS <<< "${{ steps.test_targets.outputs.targets }}"
+            for target in "${TARGETS[@]}"; do
+              flutter test --update-goldens "test/golden/${target}/**/*_test.dart" || true
+            done
+          fi
+
+          # 生成された画像をベースディレクトリにコピー
+          find test/golden -name "signals_counter_*.png" -exec cp {} test/golden/counter_samples/goldens/base/ \;
+
+      - name: Commit base images
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add test/golden/counter_samples/goldens/base
+          git commit -m "chore: Update base golden images [skip ci]" || true
+          git push origin HEAD:${{ github.head_ref }} || true
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          clean: true
+
+      - name: Generate current images
+        run: |
+          # 依存関係の初期化
+          rm -f pubspec.lock
+          flutter clean
+          flutter pub get
+
+          # テストディレクトリを作成
+          mkdir -p test/golden/counter_samples/goldens/current
+
+          # テスト対象に応じてテストを実行
+          if [ "${{ steps.test_targets.outputs.targets }}" = "all" ]; then
+            flutter test --update-goldens test/golden || true
+          else
+            IFS=',' read -ra TARGETS <<< "${{ steps.test_targets.outputs.targets }}"
+            for target in "${TARGETS[@]}"; do
+              flutter test --update-goldens "test/golden/${target}/**/*_test.dart" || true
+            done
+          fi
+
+          # 生成された画像を現在のディレクトリにコピー
+          find test/golden -name "signals_counter_*.png" -exec cp {} test/golden/counter_samples/goldens/current/ \;
+
+      - name: Commit current images
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add test/golden/counter_samples/goldens/current
+          git commit -m "chore: Update current golden images [skip ci]" || true
+          git push origin HEAD:${{ github.head_ref }} || true
+
+      - name: Run comparison
+        id: golden_test
+        continue-on-error: true
+        run: |
+          # 画像の一覧を取得
+          base_images=$(ls test/golden/counter_samples/goldens/base/*.png 2>/dev/null || true)
+          current_images=$(ls test/golden/counter_samples/goldens/current/*.png 2>/dev/null || true)
+
+          # 差分の検出
+          diff_found=0
+          for img in $base_images $current_images; do
+            base_img="test/golden/counter_samples/goldens/base/$(basename $img)"
+            current_img="test/golden/counter_samples/goldens/current/$(basename $img)"
+            if [ -f "$base_img" ] && [ -f "$current_img" ]; then
+              if ! cmp -s "$base_img" "$current_img"; then
+                diff_found=1
+                break
+              fi
+            else
+              diff_found=1
+              break
+            fi
+          done
+
+          if [ "$diff_found" -eq "1" ]; then
+            echo "Changes detected in Golden Tests"
+            echo "test_failed=1" >> $GITHUB_OUTPUT
+          else
+            echo "No changes in Golden Tests"
+            echo "test_failed=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload Golden Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-test-results
+          path: |
+            test/golden/counter_samples/goldens/base
+            test/golden/counter_samples/goldens/current
+          retention-days: 7
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v2
+        if: always()
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: Golden Test Results
+
+      - name: Create or Update Comment
+        uses: peter-evans/create-or-update-comment@v3
+        if: always()
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## Golden Test Results
+
+            ### 実行結果
+            ${{ steps.golden_test.outputs.test_failed == '0' && '✅ テストが成功しました' || '🔄 UIの更新が検出されました' }}
+
+            ### テスト対象
+            ${{ steps.test_targets.outputs.targets == 'all' && '全てのGolden Test' || format('選択されたテスト: {0}', steps.test_targets.outputs.targets) }}
+
+            ### UI変更の比較
+            ${{ steps.test_targets.outputs.targets == 'all' || contains(steps.test_targets.outputs.targets, 'counter') }}
+            <details>
+            <summary>Counter Sample</summary>
+
+            #### 初期状態
+            | 変更前 | 変更後 |
+            |--------|--------|
+            | ![Before](test/golden/counter_samples/goldens/base/signals_counter_initial.png) | ![After](test/golden/counter_samples/goldens/current/signals_counter_initial.png) |
+
+            #### カウントアップ後
+            | 変更前 | 変更後 |
+            |--------|--------|
+            | ![Before](test/golden/counter_samples/goldens/base/signals_counter_incremented.png) | ![After](test/golden/counter_samples/goldens/current/signals_counter_incremented.png) |
+
+            </details>
+
+            ${{ steps.test_targets.outputs.targets == 'all' || contains(steps.test_targets.outputs.targets, 'tracked,change_stack,event_sink') }}
+            <details>
+            <summary>その他のサンプル</summary>
+
+            - Tracked Signal Sample
+            - Change Stack Signal Sample
+            - Event Sink Signal Sample
+            </details>
+
+            ${{ steps.golden_test.outputs.test_failed != '0' && '
+            ### 注意
+            このテストの失敗は、UIの意図的な更新によるものと思われます。
+            上記の画像を確認して、変更内容が意図した通りであることを確認してください。
+            問題がなければ、`--update-goldens`フラグを使用して新しいGolden Testの基準を更新してください。
+            ' || '' }}

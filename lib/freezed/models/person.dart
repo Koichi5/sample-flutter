@@ -1,12 +1,12 @@
-import 'package:freezed/freezed.dart';
+// import 'package:freezed/freezed.dart';
 
-@Freezed()
-class Person {
-  final String name;
-  final String email;
+// @Freezed()
+// class Person {
+//   final String name;
+//   final String email;
 
-  Person(
-    this.name,
-    this.email,
-  );
-}
+//   Person(
+//     this.name,
+//     this.email,
+//   );
+// }
