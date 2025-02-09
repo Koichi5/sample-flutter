@@ -43,7 +43,7 @@ jobs:
           flutter pub get
 
           # テストディレクトリを作成
-          mkdir -p test/golden/base
+          mkdir -p test/golden/counter_samples/goldens/base
 
           # テスト対象に応じてテストを実行
           if [ "${{ steps.test_targets.outputs.targets }}" = "all" ]; then
@@ -56,13 +56,13 @@ jobs:
           fi
 
           # 生成された画像をベースディレクトリにコピー
-          find test/golden -name "*.png" -exec cp {} test/golden/base/ \;
+          find test/golden -name "signals_counter_*.png" -exec cp {} test/golden/counter_samples/goldens/base/ \;
 
       - name: Commit base images
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add test/golden/base
+          git add test/golden/counter_samples/goldens/base
           git commit -m "chore: Update base golden images [skip ci]" || true
           git push origin HEAD:${{ github.head_ref }} || true
 
@@ -80,7 +80,7 @@ jobs:
           flutter pub get
 
           # テストディレクトリを作成
-          mkdir -p test/golden/current
+          mkdir -p test/golden/counter_samples/goldens/current
 
           # テスト対象に応じてテストを実行
           if [ "${{ steps.test_targets.outputs.targets }}" = "all" ]; then
@@ -93,13 +93,13 @@ jobs:
           fi
 
           # 生成された画像を現在のディレクトリにコピー
-          find test/golden -name "*.png" -exec cp {} test/golden/current/ \;
+          find test/golden -name "signals_counter_*.png" -exec cp {} test/golden/counter_samples/goldens/current/ \;
 
       - name: Commit current images
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add test/golden/current
+          git add test/golden/counter_samples/goldens/current
           git commit -m "chore: Update current golden images [skip ci]" || true
           git push origin HEAD:${{ github.head_ref }} || true
 
@@ -108,14 +108,14 @@ jobs:
         continue-on-error: true
         run: |
           # 画像の一覧を取得
-          base_images=$(ls test/golden/base/*.png 2>/dev/null || true)
-          current_images=$(ls test/golden/current/*.png 2>/dev/null || true)
+          base_images=$(ls test/golden/counter_samples/goldens/base/*.png 2>/dev/null || true)
+          current_images=$(ls test/golden/counter_samples/goldens/current/*.png 2>/dev/null || true)
 
           # 差分の検出
           diff_found=0
           for img in $base_images $current_images; do
-            base_img="test/golden/base/$(basename $img)"
-            current_img="test/golden/current/$(basename $img)"
+            base_img="test/golden/counter_samples/goldens/base/$(basename $img)"
+            current_img="test/golden/counter_samples/goldens/current/$(basename $img)"
             if [ -f "$base_img" ] && [ -f "$current_img" ]; then
               if ! cmp -s "$base_img" "$current_img"; then
                 diff_found=1
@@ -141,8 +141,8 @@ jobs:
         with:
           name: golden-test-results
           path: |
-            test/golden/base
-            test/golden/current
+            test/golden/counter_samples/goldens/base
+            test/golden/counter_samples/goldens/current
           retention-days: 7
 
       - name: Find Comment
@@ -177,12 +177,12 @@ jobs:
             #### 初期状態
             | 変更前 | 変更後 |
             |--------|--------|
-            | ![Before](../test/golden/base/signals_counter_initial.png) | ![After](../test/golden/current/signals_counter_initial.png) |
+            | ![Before](test/golden/counter_samples/goldens/base/signals_counter_initial.png) | ![After](test/golden/counter_samples/goldens/current/signals_counter_initial.png) |
 
             #### カウントアップ後
             | 変更前 | 変更後 |
             |--------|--------|
-            | ![Before](../test/golden/base/signals_counter_incremented.png) | ![After](../test/golden/current/signals_counter_incremented.png) |
+            | ![Before](test/golden/counter_samples/goldens/base/signals_counter_incremented.png) | ![After](test/golden/counter_samples/goldens/current/signals_counter_incremented.png) |
 
             </details>
 
