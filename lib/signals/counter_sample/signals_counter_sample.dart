@@ -11,7 +11,8 @@ class SignalsCounterSample extends StatelessWidget {
     effect(() {
       debugPrint('effect count: $count');
     });
-    count.subscribe((value) {  // effect, subscribe どちらでも値の監視が可能
+    count.subscribe((value) {
+      // effect, subscribe どちらでも値の監視が可能
       debugPrint('subscribe count: $value');
     });
 
@@ -20,13 +21,40 @@ class SignalsCounterSample extends StatelessWidget {
         title: const Text('Signals Counter Sample'),
       ),
       body: Center(
-        child: Watch((context) => Text("Count: $count,  isOdd: $isOdd")),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Watch((context) => Text(
+                  count.value.toString(),
+                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                )),
+            const SizedBox(height: 16),
+            Watch((context) => Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: isOdd.value ? Colors.orange : Colors.blue,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Text(
+                    isOdd.value ? 'Odd' : 'Even',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                )),
+          ],
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           count.value++;
         },
-        child: const Icon(Icons.add),
+        icon: const Icon(Icons.add),
+        label: const Text('Increment'),
       ),
     );
   }
