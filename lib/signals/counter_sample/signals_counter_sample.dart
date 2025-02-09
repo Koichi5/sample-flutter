@@ -31,14 +31,7 @@ class SignalsCounterSample extends StatelessWidget {
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Theme.of(context).colorScheme.primary.withOpacity(0.1),
-              Theme.of(context).colorScheme.background,
-            ],
-          ),
+          color: Theme.of(context).colorScheme.surface,
         ),
         child: Center(
           child: Column(
