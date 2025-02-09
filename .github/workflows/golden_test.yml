@@ -58,6 +58,14 @@ jobs:
           # 生成された画像をベースディレクトリにコピー
           find test/golden -name "*.png" -exec cp {} test/golden/base/ \;
 
+      - name: Commit base images
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add test/golden/base
+          git commit -m "chore: Update base golden images [skip ci]" || true
+          git push origin HEAD:${{ github.head_ref }} || true
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -86,6 +94,14 @@ jobs:
 
           # 生成された画像を現在のディレクトリにコピー
           find test/golden -name "*.png" -exec cp {} test/golden/current/ \;
+
+      - name: Commit current images
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add test/golden/current
+          git commit -m "chore: Update current golden images [skip ci]" || true
+          git push origin HEAD:${{ github.head_ref }} || true
 
       - name: Run comparison
         id: golden_test
@@ -161,12 +177,12 @@ jobs:
             #### 初期状態
             | 変更前 | 変更後 |
             |--------|--------|
-            | ![Before](https://github.com/${{ github.repository }}/blob/${{ github.event.pull_request.head.sha }}/test/golden/base/signals_counter_initial.png?raw=true) | ![After](https://github.com/${{ github.repository }}/blob/${{ github.event.pull_request.head.sha }}/test/golden/current/signals_counter_initial.png?raw=true) |
+            | ![Before](../test/golden/base/signals_counter_initial.png) | ![After](../test/golden/current/signals_counter_initial.png) |
 
             #### カウントアップ後
             | 変更前 | 変更後 |
             |--------|--------|
-            | ![Before](https://github.com/${{ github.repository }}/blob/${{ github.event.pull_request.head.sha }}/test/golden/base/signals_counter_incremented.png?raw=true) | ![After](https://github.com/${{ github.repository }}/blob/${{ github.event.pull_request.head.sha }}/test/golden/current/signals_counter_incremented.png?raw=true) |
+            | ![Before](../test/golden/base/signals_counter_incremented.png) | ![After](../test/golden/current/signals_counter_incremented.png) |
 
             </details>
 
