@@ -17,6 +17,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.base_ref }}
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -34,15 +35,13 @@ jobs:
             echo "targets=all" >> $GITHUB_OUTPUT
           fi
 
-      - name: Clean and get dependencies for base
+      - name: Generate base images
         run: |
-          git checkout ${{ github.base_ref }}
+          # 依存関係の初期化
           rm -f pubspec.lock
           flutter clean
           flutter pub get
 
-      - name: Save base images
-        run: |
           # テストディレクトリを作成
           mkdir -p test/golden/base
 
@@ -59,15 +58,19 @@ jobs:
           # 生成された画像をベースディレクトリにコピー
           find test/golden -name "*.png" -exec cp {} test/golden/base/ \;
 
-      - name: Clean and get dependencies for current
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          clean: true
+
+      - name: Generate current images
         run: |
-          git checkout ${{ github.head_ref }}
+          # 依存関係の初期化
           rm -f pubspec.lock
           flutter clean
           flutter pub get
 
-      - name: Generate current images
-        run: |
           # テストディレクトリを作成
           mkdir -p test/golden/current
 
