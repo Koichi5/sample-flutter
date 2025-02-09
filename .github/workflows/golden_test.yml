@@ -27,18 +27,62 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Get test targets
+        id: test_targets
+        run: |
+          # PRのタイトルから対象を取得
+          if [[ "${{ github.event.pull_request.title }}" =~ \[GoldenTest:(.+)\] ]]; then
+            echo "targets=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+          else
+            echo "targets=all" >> $GITHUB_OUTPUT
+          fi
+
       - name: Save base images
         run: |
+          # 現在の変更を退避
+          git stash
+
+          # ベースブランチをチェックアウト
           git checkout ${{ github.base_ref }}
+
+          # テストディレクトリを作成
           mkdir -p test/golden/base
-          flutter test --update-goldens test/golden || true
+
+          # テスト対象に応じてテストを実行
+          if [ "${{ steps.test_targets.outputs.targets }}" = "all" ]; then
+            flutter test --update-goldens test/golden || true
+          else
+            IFS=',' read -ra TARGETS <<< "${{ steps.test_targets.outputs.targets }}"
+            for target in "${TARGETS[@]}"; do
+              flutter test --update-goldens "test/golden/${target}/**/*_test.dart" || true
+            done
+          fi
+
+          # 生成された画像をベースディレクトリにコピー
           cp -r test/golden/*.png test/golden/base/ || true
 
       - name: Generate current images
         run: |
+          # PRブランチをチェックアウト
           git checkout ${{ github.head_ref }}
+
+          # 退避した変更を復元
+          git stash pop || true
+
+          # テストディレクトリを作成
           mkdir -p test/golden/current
-          flutter test --update-goldens test/golden || true
+
+          # テスト対象に応じてテストを実行
+          if [ "${{ steps.test_targets.outputs.targets }}" = "all" ]; then
+            flutter test --update-goldens test/golden || true
+          else
+            IFS=',' read -ra TARGETS <<< "${{ steps.test_targets.outputs.targets }}"
+            for target in "${TARGETS[@]}"; do
+              flutter test --update-goldens "test/golden/${target}/**/*_test.dart" || true
+            done
+          fi
+
+          # 生成された画像を現在のディレクトリにコピー
           cp -r test/golden/*.png test/golden/current/ || true
 
       - name: Run comparison
@@ -85,6 +129,9 @@ jobs:
             ### 実行結果
             ${{ steps.golden_test.outputs.test_failed == '0' && '✅ テストが成功しました' || '🔄 UIの更新が検出されました' }}
 
+            ### テスト対象
+            ${{ steps.test_targets.outputs.targets == 'all' && '全てのGolden Test' || format('選択されたテスト: {0}', steps.test_targets.outputs.targets) }}
+
             ### UI変更の比較
             <details>
             <summary>Counter Sample</summary>
@@ -107,30 +154,6 @@ jobs:
             - Tracked Signal Sample
             - Change Stack Signal Sample
             - Event Sink Signal Sample
-            </details>
-
-            ### テスト対象
-            <details>
-            <summary>詳細</summary>
-
-            - Counter Sample
-              - 初期状態
-              - カウントアップ後
-            - Tracked Signal Sample
-              - 初期状態
-              - 月選択後
-              - Undo後
-            - Change Stack Signal Sample
-              - 初期状態
-              - 1回目の月選択後
-              - 2回目の月選択後
-              - Undo後
-              - Redo後
-            - Event Sink Signal Sample
-              - 初期状態
-              - カウント追加後
-              - エラー追加後
-              - クローズ後
             </details>
 
             ${{ steps.golden_test.outputs.test_failed != '0' && '
