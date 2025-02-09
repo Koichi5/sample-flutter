@@ -18,25 +18,39 @@ class SignalsCounterSample extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Signals Counter Sample'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Text(
+              'Count Value:',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 8),
             Watch((context) => Text(
                   count.value.toString(),
                   style: Theme.of(context).textTheme.displayLarge?.copyWith(
                         fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                 )),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             Watch((context) => Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   decoration: BoxDecoration(
                     color: isOdd.value ? Colors.orange : Colors.blue,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                   child: Text(
                     isOdd.value ? 'Odd' : 'Even',
