@@ -21,7 +21,7 @@ dependencies:
   json_annotation: ^4.8.0
   flutter_hooks: ^0.20.5
   gap: ^3.0.1
-  freezed: ^2.5.8
+  freezed: ^2.4.1
   table_calendar: ^3.1.2
   image: ^4.3.0
   image_picker: ^1.1.2
