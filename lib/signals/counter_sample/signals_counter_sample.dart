@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:signals/signals_flutter.dart';
+import 'package:signals_flutter/signals_flutter.dart';
 
 class SignalsCounterSample extends StatelessWidget {
   const SignalsCounterSample({super.key});
@@ -63,7 +63,7 @@ class SignalsCounterSample extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      Watch((context) => Text(
+                      watch((context) => Text(
                             count.value.toString(),
                             style: Theme.of(context)
                                 .textTheme
@@ -75,7 +75,7 @@ class SignalsCounterSample extends StatelessWidget {
                                 ),
                           )),
                       const SizedBox(height: 32),
-                      Watch((context) => Container(
+                      watch((context) => Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 32,
                               vertical: 16,
