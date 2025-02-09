@@ -33,7 +33,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: golden-test-results
-          path: test/golden
+          path: |
+            test/golden
+            test/golden/comparisons
           retention-days: 7
 
       - name: Find Comment
@@ -57,12 +59,32 @@ jobs:
             ### 実行結果
             ${{ job.status == 'success' && '✅ テストが成功しました' || '❌ テストが失敗しました' }}
 
-            ### 画面キャプチャ
-            以下のアーティファクトに画面キャプチャが保存されています：
-            [golden-test-results](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            ### UI変更の比較
+            <details>
+            <summary>Counter Sample</summary>
+
+            #### 初期状態
+            | Before | After |
+            |--------|-------|
+            | ![Before](test/golden/signals_counter_initial.png) | ![After](test/golden/comparisons/signals_counter_initial/after_signals_counter_initial.png) |
+
+            #### カウントアップ後
+            | Before | After |
+            |--------|-------|
+            | ![Before](test/golden/signals_counter_incremented.png) | ![After](test/golden/comparisons/signals_counter_incremented/after_signals_counter_incremented.png) |
+            </details>
 
             <details>
-            <summary>テスト対象</summary>
+            <summary>その他のサンプル</summary>
+
+            - Tracked Signal Sample
+            - Change Stack Signal Sample
+            - Event Sink Signal Sample
+            </details>
+
+            ### テスト対象
+            <details>
+            <summary>詳細</summary>
 
             - Counter Sample
               - 初期状態
@@ -82,5 +104,4 @@ jobs:
               - カウント追加後
               - エラー追加後
               - クローズ後
-
             </details>
