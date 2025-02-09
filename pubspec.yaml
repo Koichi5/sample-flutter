@@ -34,6 +34,8 @@ dependencies:
   pigeon: ^22.7.0
   super_clipboard: ^0.8.24
   crop_your_image: ^2.0.0
+  signals: ^6.0.2
+  signals_flutter: ^6.0.2
 
 dev_dependencies:
   flutter_test:
