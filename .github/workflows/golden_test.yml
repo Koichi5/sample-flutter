@@ -24,9 +24,6 @@ jobs:
           flutter-version: "3.27.4"
           channel: "stable"
 
-      - name: Install dependencies
-        run: flutter pub get
-
       - name: Get test targets
         id: test_targets
         run: |
@@ -37,14 +34,15 @@ jobs:
             echo "targets=all" >> $GITHUB_OUTPUT
           fi
 
+      - name: Clean and get dependencies for base
+        run: |
+          git checkout ${{ github.base_ref }}
+          rm -f pubspec.lock
+          flutter clean
+          flutter pub get
+
       - name: Save base images
         run: |
-          # 現在の変更を退避
-          git stash
-
-          # ベースブランチをチェックアウト
-          git checkout ${{ github.base_ref }}
-
           # テストディレクトリを作成
           mkdir -p test/golden/base
 
@@ -59,16 +57,17 @@ jobs:
           fi
 
           # 生成された画像をベースディレクトリにコピー
-          cp -r test/golden/*.png test/golden/base/ || true
+          find test/golden -name "*.png" -exec cp {} test/golden/base/ \;
+
+      - name: Clean and get dependencies for current
+        run: |
+          git checkout ${{ github.head_ref }}
+          rm -f pubspec.lock
+          flutter clean
+          flutter pub get
 
       - name: Generate current images
         run: |
-          # PRブランチをチェックアウト
-          git checkout ${{ github.head_ref }}
-
-          # 退避した変更を復元
-          git stash pop || true
-
           # テストディレクトリを作成
           mkdir -p test/golden/current
 
@@ -83,14 +82,33 @@ jobs:
           fi
 
           # 生成された画像を現在のディレクトリにコピー
-          cp -r test/golden/*.png test/golden/current/ || true
+          find test/golden -name "*.png" -exec cp {} test/golden/current/ \;
 
       - name: Run comparison
         id: golden_test
         continue-on-error: true
         run: |
-          diff_count=$(diff -r test/golden/base test/golden/current | wc -l)
-          if [ "$diff_count" -gt "0" ]; then
+          # 画像の一覧を取得
+          base_images=$(ls test/golden/base/*.png 2>/dev/null || true)
+          current_images=$(ls test/golden/current/*.png 2>/dev/null || true)
+
+          # 差分の検出
+          diff_found=0
+          for img in $base_images $current_images; do
+            base_img="test/golden/base/$(basename $img)"
+            current_img="test/golden/current/$(basename $img)"
+            if [ -f "$base_img" ] && [ -f "$current_img" ]; then
+              if ! cmp -s "$base_img" "$current_img"; then
+                diff_found=1
+                break
+              fi
+            else
+              diff_found=1
+              break
+            fi
+          done
+
+          if [ "$diff_found" -eq "1" ]; then
             echo "Changes detected in Golden Tests"
             echo "test_failed=1" >> $GITHUB_OUTPUT
           else
@@ -133,21 +151,23 @@ jobs:
             ${{ steps.test_targets.outputs.targets == 'all' && '全てのGolden Test' || format('選択されたテスト: {0}', steps.test_targets.outputs.targets) }}
 
             ### UI変更の比較
+            ${{ steps.test_targets.outputs.targets == 'all' || contains(steps.test_targets.outputs.targets, 'counter') }}
             <details>
             <summary>Counter Sample</summary>
 
             #### 初期状態
             | 変更前 | 変更後 |
             |--------|--------|
-            | ![Before](test/golden/base/signals_counter_initial.png) | ![After](test/golden/current/signals_counter_initial.png) |
+            | ![Before](https://github.com/${{ github.repository }}/blob/${{ github.event.pull_request.head.sha }}/test/golden/base/signals_counter_initial.png?raw=true) | ![After](https://github.com/${{ github.repository }}/blob/${{ github.event.pull_request.head.sha }}/test/golden/current/signals_counter_initial.png?raw=true) |
 
             #### カウントアップ後
             | 変更前 | 変更後 |
             |--------|--------|
-            | ![Before](test/golden/base/signals_counter_incremented.png) | ![After](test/golden/current/signals_counter_incremented.png) |
+            | ![Before](https://github.com/${{ github.repository }}/blob/${{ github.event.pull_request.head.sha }}/test/golden/base/signals_counter_incremented.png?raw=true) | ![After](https://github.com/${{ github.repository }}/blob/${{ github.event.pull_request.head.sha }}/test/golden/current/signals_counter_incremented.png?raw=true) |
 
             </details>
 
+            ${{ steps.test_targets.outputs.targets == 'all' || contains(steps.test_targets.outputs.targets, 'tracked,change_stack,event_sink') }}
             <details>
             <summary>その他のサンプル</summary>
 
