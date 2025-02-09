@@ -15,6 +15,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout base branch
+        run: |
+          git checkout ${{ github.base_ref }}
+          mkdir -p test/golden/base
+          if [ -d "test/golden" ]; then
+            cp -r test/golden/*.png test/golden/base/ || true
+          fi
+
+      - name: Checkout PR branch
+        run: |
+          git checkout ${{ github.head_ref }}
+          mkdir -p test/golden/current
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -30,6 +45,7 @@ jobs:
         continue-on-error: true
         run: |
           flutter test --update-goldens test/golden
+          cp -r test/golden/*.png test/golden/current/ || true
           echo "test_failed=$?" >> $GITHUB_OUTPUT
 
       - name: Upload Golden Test Results
@@ -38,8 +54,8 @@ jobs:
         with:
           name: golden-test-results
           path: |
-            test/golden
-            test/golden/failures
+            test/golden/base
+            test/golden/current
           retention-days: 7
 
       - name: Find Comment
@@ -68,14 +84,14 @@ jobs:
             <summary>Counter Sample</summary>
 
             #### 初期状態
-            | 現在のUI | 期待されるUI |
-            |--------|------------|
-            | ![Current](test/golden/failures/signals_counter_initial.png) | ![Expected](test/golden/signals_counter_initial.png) |
+            | 変更前 | 変更後 |
+            |--------|--------|
+            | ![Before](test/golden/base/signals_counter_initial.png) | ![After](test/golden/current/signals_counter_initial.png) |
 
             #### カウントアップ後
-            | 現在のUI | 期待されるUI |
-            |--------|------------|
-            | ![Current](test/golden/failures/signals_counter_incremented.png) | ![Expected](test/golden/signals_counter_incremented.png) |
+            | 変更前 | 変更後 |
+            |--------|--------|
+            | ![Before](test/golden/base/signals_counter_incremented.png) | ![After](test/golden/current/signals_counter_incremented.png) |
 
             </details>
 
