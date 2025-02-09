@@ -14,14 +14,6 @@ void main() {
         name: 'signals_counter_initial',
         tester: tester,
       );
-
-      await compareGoldens(
-        testName: 'signals_counter_initial',
-        beforeImagePath: 'test/golden/signals_counter_initial.png',
-        afterImagePath: 'test/golden/signals_counter_initial.png',
-        outputPath:
-            'test/golden/comparisons/signals_counter_initial/comparison.txt',
-      );
     });
 
     testGoldens('カウントアップ後のスクリーンショット', (tester) async {
@@ -40,14 +32,6 @@ void main() {
         widget: const SignalsCounterSample(),
         name: 'signals_counter_incremented',
         tester: tester,
-      );
-
-      await compareGoldens(
-        testName: 'signals_counter_incremented',
-        beforeImagePath: 'test/golden/signals_counter_incremented.png',
-        afterImagePath: 'test/golden/signals_counter_incremented.png',
-        outputPath:
-            'test/golden/comparisons/signals_counter_incremented/comparison.txt',
       );
     });
   });
