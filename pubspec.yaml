@@ -22,7 +22,7 @@ dependencies:
   flutter_hooks: ^0.20.5
   gap: ^3.0.1
   dataclass: ^1.0.0
-  freezed: ^3.0.0-0.0.dev
+  freezed: ^2.5.8
   table_calendar: ^3.1.2
   image: ^4.3.0
   image_picker: ^1.1.2
@@ -43,7 +43,6 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   riverpod_generator: ^2.3.3
   go_router_builder: ^2.3.4
-  # freezed: ^2.4.1
   json_serializable: ^6.6.1
   golden_toolkit: ^0.15.0
   alchemist: ^0.7.0
