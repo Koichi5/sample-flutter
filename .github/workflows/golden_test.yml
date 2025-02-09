@@ -6,6 +6,10 @@ on:
       - "lib/signals/**"
       - "test/golden/**"
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   golden_tests:
     runs-on: ubuntu-latest
@@ -30,6 +34,7 @@ jobs:
         with:
           name: golden-test-results
           path: test/golden
+          retention-days: 7
 
       - name: Find Comment
         uses: peter-evans/find-comment@v2
