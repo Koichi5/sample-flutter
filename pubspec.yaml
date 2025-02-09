@@ -1,12 +1,12 @@
 name: sample_flutter
 description: A new Flutter project.
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.5.0-0.0-dev <4.0.0'
+  sdk: ">=3.5.0-0.0-dev <4.0.0"
 
 dependencies:
   flutter:
@@ -45,6 +45,8 @@ dev_dependencies:
   go_router_builder: ^2.3.4
   # freezed: ^2.4.1
   json_serializable: ^6.6.1
+  golden_toolkit: ^0.15.0
+  alchemist: ^0.7.0
 
 flutter:
   uses-material-design: true

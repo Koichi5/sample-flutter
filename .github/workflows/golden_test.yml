@@ -1,0 +1,81 @@
+name: Flutter Golden Tests
+
+on:
+  pull_request:
+    paths:
+      - "lib/signals/**"
+      - "test/golden/**"
+
+jobs:
+  golden_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.0"
+          channel: "stable"
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run Golden Tests
+        run: flutter test --update-goldens test/golden
+
+      - name: Upload Golden Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: golden-test-results
+          path: test/golden
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v2
+        if: always()
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: Golden Test Results
+
+      - name: Create or Update Comment
+        uses: peter-evans/create-or-update-comment@v3
+        if: always()
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## Golden Test Results
+
+            ### 実行結果
+            ${{ job.status == 'success' && '✅ テストが成功しました' || '❌ テストが失敗しました' }}
+
+            ### 画面キャプチャ
+            以下のアーティファクトに画面キャプチャが保存されています：
+            [golden-test-results](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            <details>
+            <summary>テスト対象</summary>
+
+            - Counter Sample
+              - 初期状態
+              - カウントアップ後
+            - Tracked Signal Sample
+              - 初期状態
+              - 月選択後
+              - Undo後
+            - Change Stack Signal Sample
+              - 初期状態
+              - 1回目の月選択後
+              - 2回目の月選択後
+              - Undo後
+              - Redo後
+            - Event Sink Signal Sample
+              - 初期状態
+              - カウント追加後
+              - エラー追加後
+              - クローズ後
+
+            </details>
