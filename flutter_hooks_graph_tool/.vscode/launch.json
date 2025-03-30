@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "name": "devtools_extension + simulated environment",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--dart-define=use_simulated_environment=true"
+            ],
+        },
+    ]
+}

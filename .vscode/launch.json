@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "app",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart",
+        },
+        {
+            "name": "devtools_extension + simulated environment",
+            "program": "flutter_hooks_graph_tool/lib/main.dart",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--dart-define=use_simulated_environment=true"
+            ],
+        },
+    ]
+}

@@ -69,39 +69,40 @@ class SignalsCounterSample extends StatelessWidget {
                                 ),
                           )),
                       const SizedBox(height: 32),
-                      Watch((context) => Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 32,
-                              vertical: 16,
-                            ),
-                            decoration: BoxDecoration(
-                              color: isOdd.value
-                                  ? Colors.orange.shade400
-                                  : Colors.blue.shade400,
-                              borderRadius: BorderRadius.circular(24),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: (isOdd.value
-                                          ? Colors.orange
-                                          : Colors.blue)
-                                      .withOpacity(0.3),
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 6),
+                      Watch(
+                        (context) => Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 32,
+                            vertical: 16,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isOdd.value
+                                ? Colors.orange.shade400
+                                : Colors.blue.shade400,
+                            borderRadius: BorderRadius.circular(24),
+                            boxShadow: [
+                              BoxShadow(
+                                color:
+                                    (isOdd.value ? Colors.orange : Colors.blue)
+                                        .withOpacity(0.3),
+                                blurRadius: 12,
+                                offset: const Offset(0, 6),
+                              ),
+                            ],
+                          ),
+                          child: Text(
+                            isOdd.value ? 'Odd' : 'Even',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2,
                                 ),
-                              ],
-                            ),
-                            child: Text(
-                              isOdd.value ? 'Odd' : 'Even',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
-                                  ?.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 2,
-                                  ),
-                            ),
-                          )),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
