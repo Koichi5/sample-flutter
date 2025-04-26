@@ -35,6 +35,7 @@ dependencies:
   crop_your_image: ^2.0.0
   signals: ^6.0.2
   signals_flutter: ^6.0.2
+  rive: ^0.13.20
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +52,8 @@ flutter:
   assets:
     - assets/fonts/
     - assets/images/
+    - assets/rives/
+    - assets/lotties/
 
   fonts:
     - family: Lato
