@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sample_flutter/signals/counter_sample/signals_counter_sample.dart';
-import 'package:sample_flutter/signals/form/hooks_form.dart';
-import 'package:sample_flutter/signals/reactive_shape_maker.dart/signals_reactive_shape_maker.dart';
 
 void main() {
   runApp(
@@ -23,11 +20,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Lato',
         fontFamilyFallback: const ['NotoSans'],
       ),
-      // home: SignalsCounterSample(),
-      home: const HooksForm(
-        initialName: 'John Doe',
-        initialEmail: 'john.doe@example.com',
-      ),
+      home: const Placeholder(),
     );
   }
 }

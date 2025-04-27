@@ -53,3 +53,6 @@ app.*.map.json
 .fvm/
 
 pubspec.lock
+
+# Figma
+figma_mcp/
